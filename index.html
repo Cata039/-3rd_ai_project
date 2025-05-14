@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color Detector</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-window">
+    <header>
+      <h1>Color Detector</h1>
+    </header>
+
+    <main>
+      {% if original_img and palette and color_names %}
+      <section class="response-column">
+        <!-- Poza -->
+        <div class="preview" style="text-align: center;">
+          <img src="data:image/jpeg;base64,{{ original_img }}" alt="Uploaded">
+        </div>
+      
+        <!-- Paleta de culori -->
+        <div class="palette-row">
+          {% for i in range(palette|length) %}
+            <div class="swatch-wrapper">
+              <div class="swatch"
+                   style="background-color: rgb({{ palette[i][0] }}, {{ palette[i][1] }}, {{ palette[i][2] }});">
+              </div>
+              <div style="text-align: center;">
+                <small>{{ color_names[i] }}</small><br>
+                <small>RGB({{ palette[i][0] }}, {{ palette[i][1] }}, {{ palette[i][2] }})</small>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      
+        <!-- Mood & Scene -->
+        <div class="info-text">
+          <h2>Mood:</h2>
+          <p>{{ mood }}</p>
+      
+          <h2>Scene:</h2>
+          <p>{{ scene_label }}</p>
+        </div>
+      </section>      
+      
+      {% else %}
+      <section class="empty">
+        <p>Upload an image below to detect its dominant colors.</p>
+      </section>
+      {% endif %}
+    </main>
+
+    <footer>
+      <form method="POST" enctype="multipart/form-data">
+        <label class="file-picker">
+          <input type="file" name="image" accept="image/*" required>
+          <span class="btn">Choose File</span>
+        </label>
+        <button type="submit" class="send-btn">➤</button>
+      </form>
+    </footer>
+  </div>
+</body>
+</html>
